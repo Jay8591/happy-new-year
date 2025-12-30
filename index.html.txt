@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year 2026 ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #ff4e50, #1c1c1c);
+  overflow: hidden;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 30px;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  animation: glow 2s infinite alternate;
+}
+
+h2 {
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.3rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+button {
+  margin-top: 25px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 30px;
+  background: #ff4e50;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 15px #ff4e50;
+}
+
+button:hover {
+  background: #ff7676;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff4e50; }
+  to { text-shadow: 0 0 25px #ffb3b3; }
+}
+
+/* Fireworks Canvas */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6c2c8b58.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+  <h1>🎆 Happy New Year 2026 🎆</h1>
+  <h2>My love ❤️</h2>
+  <p id="wish">
+    May the coming year be your best one yet, filled with love and success!
+  </p>
+  <button onclick="startCelebration()">Celebrate 🎉</button>
+</div>
+
+<script>
+/* Music */
+function startCelebration() {
+  document.getElementById("music").play();
+  launchFireworks();
+}
+
+/* Fireworks */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let fireworks = [];
+
+function Firework() {
+  this.x = Math.random() * canvas.width;
+  this.y = canvas.height;
+  this.targetY = Math.random() * canvas.height / 2;
+  this.radius = 2;
+  this.color = hsl(${Math.random()*360},100%,60%);
+}
+
+Firework.prototype.update = function () {
+  this.y -= 5;
+  if (this.y <= this.targetY) {
+    for (let i = 0; i < 30; i++) {
+      fireworks.push(new Particle(this.x, this.y, this.color));
+    }
+    return true;
+  }
+  return false;
+};
+
+Firework.prototype.draw = function () {
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+  ctx.fillStyle = this.color;
+  ctx.fill();
+};
+
+function Particle(x, y, color) {
+  this.x = x;
+  this.y = y;
+  this.vx = (Math.random() - 0.5) * 6;
+  this.vy = (Math.random() - 0.5) * 6;
+  this.life = 60;
+  this.color = color;
+}
+
+Particle.prototype.update = function () {
+  this.x += this.vx;
+  this.y += this.vy;
+  this.life--;
+};
+
+Particle.prototype.draw = function () {
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+  ctx.fillStyle = this.color;
+  ctx.fill();
+};
+
+function launchFireworks() {
+  setInterval(() => {
+    fireworks.push(new Firework());
+  }, 500);
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fireworks = fireworks.filter(obj => {
+    if (obj instanceof Firework) {
+      obj.draw();
+      return !obj.update();
+    } else {
+      obj.draw();
+      obj.update();
+      return obj.life > 0;
+    }
+  });
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
